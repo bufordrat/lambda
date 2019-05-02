@@ -179,7 +179,7 @@
   false), which is indeed what the =lambda= typechecker tells us:
   #+BEGIN_EXAMPLE
   $ lambda --check-types
-  (blue matt) : T
+  (blue keith) : T
   #+END_EXAMPLE
 * Source Files
 

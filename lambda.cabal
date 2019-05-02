@@ -8,20 +8,11 @@ version:             0.1.0.0
 -- description:
 -- bug-reports:
 -- license:
--- license-file:        LICENSE
 author:              Matt Teichman
 maintainer:          teichman@uchicago.edu
 -- copyright:
 -- category:
 extra-source-files:  README.org
-
--- library
---   exposed-modules:     ImperativeFuncs, Latex, LambdaParse, Lexer, LTerm
-  -- other-modules:
-  -- other-extensions:
-  -- build-depends:       base ^>=4.11.0.0
-  -- hs-source-dirs:
-  -- default-language:    Haskell2010
 
 executable lambda
   main-is:             Main.hs
