@@ -1,0 +1,32 @@
+\documentclass[10pt]{article}
+
+\title{Sample Lambda Calculus Typesetting}
+\author{}
+\date{}
+\thispagestyle{empty}
+\pagestyle{empty}
+\usepackage{linguex}
+\usepackage{amssymb,amsmath}
+\usepackage{stmaryrd}
+\usepackage[left=2cm,top=1cm,bottom=2cm,right=2cm,nohead,nofoot]{geometry}
+\setlength{\parindent}{0in}
+
+\begin{document}
+\maketitle
+$\mathit{stu} \-\ : \-\ e\\
+\mathit{false} \-\ : \-\ t\\
+\mathit{loves} \-\ : \-\ (e \-\  \rightarrow  \-\ (e \-\  \rightarrow  \-\ t))\\
+\mathit{fido} \-\ : \-\ e\\
+((\mathit{loves} \-\ \mathit{stu}) \-\ \mathit{fido}) \-\ : \-\ t\\
+(\lambda \mathit{x}_{e} \-\ . \-\ (\mathit{dog} \-\ \mathit{x})) \-\ : \-\ (e \-\  \rightarrow  \-\ t)\\
+(\lambda \mathit{x}_{e} \-\ . \-\ (\lambda \mathit{y}_{e} \-\ . \-\ \mathit{y})) \-\ : \-\ (e \-\  \rightarrow  \-\ (e \-\  \rightarrow  \-\ e))\\
+(\lambda \mathit{x}_{e} \-\ . \-\ (\lambda \mathit{y}_{e} \-\ . \-\ (\mathit{dog} \-\ \mathit{x}))) \-\ : \-\ (e \-\  \rightarrow  \-\ (e \-\  \rightarrow  \-\ t))\\
+(\lambda \mathit{x}_{e} \-\ . \-\ (\lambda \mathit{y}_{e} \-\ . \-\ ((\mathit{loves} \-\ \mathit{x}) \-\ \mathit{y}))) \-\ : \-\ (e \-\  \rightarrow  \-\ (e \-\  \rightarrow  \-\ t))\\
+(((\lambda \mathit{x}_{e} \-\ . \-\ (\lambda \mathit{y}_{e} \-\ . \-\ ((\mathit{loves} \-\ \mathit{y}) \-\ \mathit{x}))) \-\ \mathit{stu}) \-\ \mathit{fido}) \-\ : \-\ t\\
+((\mathit{then} \-\ (\mathit{dog} \-\ \mathit{fido})) \-\ (\mathit{barks} \-\ \mathit{fido})) \-\ : \-\ t\\
+(\mathit{forall} \-\ (\lambda \mathit{x}_{e} \-\ . \-\ \mathit{true})) \-\ : \-\ t\\
+(\mathit{forall} \-\ (\lambda \mathit{x}_{e} \-\ . \-\ ((\mathit{then} \-\ (\mathit{dog} \-\ \mathit{x})) \-\ (\mathit{barks} \-\ \mathit{x})))) \-\ : \-\ t\\
+(\lambda \mathit{g}_{(e \-\  \rightarrow  \-\ t)} \-\ . \-\ (\mathit{forall} \-\ (\lambda \mathit{x}_{e} \-\ . \-\ ((\mathit{then} \-\ (\mathit{dog} \-\ \mathit{x})) \-\ (\mathit{g} \-\ \mathit{x}))))) \-\ : \-\ ((e \-\  \rightarrow  \-\ t) \-\  \rightarrow  \-\ t)\\
+(\lambda \mathit{f}_{(e \-\  \rightarrow  \-\ t)} \-\ . \-\ (\lambda \mathit{g}_{(e \-\  \rightarrow  \-\ t)} \-\ . \-\ (\mathit{forall} \-\ (\lambda \mathit{x}_{e} \-\ . \-\ ((\mathit{then} \-\ (\mathit{f} \-\ \mathit{x})) \-\ (\mathit{g} \-\ \mathit{x})))))) \-\ : \-\ ((e \-\  \rightarrow  \-\ t) \-\  \rightarrow  \-\ ((e \-\  \rightarrow  \-\ t) \-\  \rightarrow  \-\ t))\\
+(((\lambda \mathit{f}_{(e \-\  \rightarrow  \-\ t)} \-\ . \-\ (\lambda \mathit{g}_{(e \-\  \rightarrow  \-\ t)} \-\ . \-\ (\mathit{forall} \-\ (\lambda \mathit{x}_{e} \-\ . \-\ ((\mathit{then} \-\ (\mathit{f} \-\ \mathit{x})) \-\ (\mathit{g} \-\ \mathit{x})))))) \-\ \mathit{dog}) \-\ \mathit{barks}) \-\ : \-\ t$
+\end{document}

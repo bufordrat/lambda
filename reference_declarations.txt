@@ -1,0 +1,10 @@
+dog:<ET>
+forall:<<ET>T>
+fido:E
+then:<T<TT>>
+barks:<ET>
+loves:<E<ET>>
+stu:E
+keith:E
+true:T
+false:T

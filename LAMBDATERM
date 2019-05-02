@@ -1,0 +1,16 @@
+stu
+false
+loves
+fido
+((loves stu) fido)
+(\x:E . (dog x))
+(\x:E . (\y:E . y))
+(\x:E . (\y:E . (dog x)))
+(\x:E . (\y:E . ((loves x) y)))
+(((\x:E . (\y:E . ((loves y) x))) stu) fido)
+((then (dog fido)) (barks fido))
+(forall (\x:E . true))
+(forall (\x:E . ((then (dog x)) (barks x))))
+(\g:<ET> . (forall (\x:E . ((then (dog x)) (g x)))))
+(\f:<ET> . (\g:<ET> . (forall (\x:E . ((then (f x)) (g x))))))
+(((\f:<ET> . (\g:<ET> . (forall (\x:E . ((then (f x)) (g x)))))) dog) barks)

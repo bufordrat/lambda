@@ -1,0 +1,199 @@
+#+TITLE: lambda
+#+AUTHOR: Matt Teichman
+#+DESCRIPTION: Typechecker for expressions in the simply-typed lambda calculus
+#+OPTIONS: toc:nil, num:nil
+
+* Description
+  =lambda= is a lambda calculus typechecker intended to help linguists
+  write natural language semantics papers.  Natural language semantics
+  is a branch of linguistics that looks at how sentence meanings are
+  built up from word meanings plus the way those words are put
+  together.  In other words, if you wanted your computer to understand
+  English, what would you tell it the rules for determining the
+  meaning of an English sentence were?  It's a bit like parsing and
+  compiling, but on the type of language that a human speaks rather
+  than on the type of language that a computer speaks.
+
+  The lingua franca for natural language semantics, following the
+  pioneering work of Richard Montague and Barbara Partee, is the
+  simply-typed lambda calculus.  To analyze a sentence of
+  e.g. English, Turkish, Nahuatl, or whatever language you're
+  interested in, assign each individual terminal element in the
+  syntactic tree (i.e. each word) a lambda term.  The meaning of the
+  sentence will then be the logical paraphrase that results from
+  folding function application over the syntactic tree.
+
+  This application allows you to write out any lambda term in a simple
+  DSL, check to make sure it is well-typed, then pretty print the
+  results either to the console or to attractively-typeset LaTeX.  See
+  [[dsl][DSL]] section for more information on how to use the DSL.
+
+* Requirements
+  This software was built for Linux and has been tested on Arch Linux,
+  5.07 kernel, and Mac OS X Mojave.  It is packaged as a Cabal
+  project, which means that the following need to be installed:
+  + Glasgow Haskell compiler (8.6.4)
+  + Cabal build system
+  # See [[installation][Installation]] section for more information on how to install
+  # Haskell and Cabal.
+* <<usage>>Usage
+  =lambda= expects three things in order to run:
+  + a command-line option
+  + a local =DECLARATIONS= file, which describes the types of all expression in
+    the lexicon
+  + a local =LAMBDATERM= file, which contains expressions for all the lambda
+    terms the user would like to type check
+  The three command line options are:
+  #+BEGIN_EXAMPLE
+  $ lambda --check-types
+  $ lambda --latex
+  $ lambda --full-latex
+  #+END_EXAMPLE
+  The =--check-types= option pretty prints the relevant types to the console, and reports the
+  type error if user provided any expressions for lambda terms that are not
+  well-typed, or if there was a parse error.  Assuming the following
+  =DECLARATIONS= file:
+  #+BEGIN_EXAMPLE
+  dog:<ET>
+  forall:<<ET>T>
+  fido:E
+  then:<T<TT>>
+  barks:<ET>
+  loves:<E<ET>>
+  stu:E
+  keith:E
+  true:T
+  false:T
+  #+END_EXAMPLE
+  ... and the following =LAMBDATERM= file:
+  #+BEGIN_EXAMPLE
+  stu
+  false
+  loves
+  fido
+  ((loves stu) fido)
+  (\x:E . (dog x))
+  (\x:E . (\y:E . y))
+  (\x:E . (\y:E . (dog x)))
+  (\x:E . (\y:E . ((loves x) y)))
+  (((\x:E . (\y:E . ((loves y) x))) stu) fido)
+  ((then (dog fido)) (barks fido))
+  (forall (\x:E . true))
+  (forall (\x:E . ((then (dog x)) (barks x))))
+  (\g:<ET> . (forall (\x:E . ((then (dog x)) (g x)))))
+  (\f:<ET> . (\g:<ET> . (forall (\x:E . ((then (f x)) (g x))))))
+  (((\f:<ET> . (\g:<ET> . (forall (\x:E . ((then (f x)) (g x)))))) dog) barks)
+  #+END_EXAMPLE
+  ... =lambda --check-types= will output the following:
+  #+BEGIN_EXAMPLE
+  stu : E
+  false : T
+  loves : (E → (E → T))
+  fido : E
+  ((loves stu) fido) : T
+  (λx:E . (dog x)) : (E → T)
+  (λx:E . (λy:E . y)) : (E → (E → E))
+  (λx:E . (λy:E . (dog x))) : (E → (E → T))
+  (λx:E . (λy:E . ((loves x) y))) : (E → (E → T))
+  (((λx:E . (λy:E . ((loves y) x))) stu) fido) : T
+  ((then (dog fido)) (barks fido)) : T
+  (forall (λx:E . true)) : T
+  (forall (λx:E . ((then (dog x)) (barks x)))) : T
+  (λg:(E → T) . (forall (λx:E . ((then (dog x)) (g x))))) : ((E → T) → T)
+  (λf:(E → T) . (λg:(E → T) . (forall (λx:E . ((then (f x)) (g x)))))) : ((E → T) → ((E → T) → T))
+  (((λf:(E → T) . (λg:(E → T) . (forall (λx:E . ((then (f x)) (g x)))))) dog) barks) : T
+  #+END_EXAMPLE
+  As you can see, each lambda term from the =LAMBDATERM= has been assigned a
+  type, which is displayed to the right of the term.
+
+  Running =lambda --latex= will print the same information to the console, but
+  typeset into LaTeX.  Running =lambda --full-latex= will write a full
+  syntactically-correct LaTeX file to the local directory called =lambdas.tex=
+  with the same information.  That file can be compiled into a PDF with
+  =pdflatex=.  You can view a sample PDF corresponding to the above example
+  [[./examples/lambdas.pdf][here]].
+* <<installation>>Installation
+  This project only requires =cabal= and =ghc= to be installed; no libraries
+  required.  To compile it, run the following command in the root directory of
+  the project:
+ 
+  #+BEGIN_EXAMPLE
+  $ cabal new-build
+  #+END_EXAMPLE
+
+  To run it, type the following command: 
+  #+BEGIN_EXAMPLE
+  $ cabal new-exec lambda -- --check-types
+  $ cabal new-exec lambda -- --latex
+  $ cabal new-exec lambda -- --full-latex
+  #+END_EXAMPLE
+
+  To install the program to the user's =~/.cabal/bin= directory, type the
+  following:
+  #+BEGIN_EXAMPLE
+  $ cabal new-install lambda
+  #+END_EXAMPLE
+  That works on most plain vanilla installs of =cabal=, but if the user's
+  =~/.cabal/config= file hasn't specified an install path, that needs to be
+  passed in explicitly:
+  #+BEGIN_EXAMPLE
+  $ cabal new-install lambda --installdir=PATH_TO_HOME/.cabal/bin
+  #+END_EXAMPLE
+  Assuming =~/.cabal/bin= is in the user's shell path, =lambda= can then be run
+  as follows:
+  #+BEGIN_EXAMPLE
+  $ lambda --check-types
+  $ lambda --latex
+  $ lambda --full-latex
+  #+END_EXAMPLE
+* <<dsl>>DSL
+  =lambda= types and terms are written in a simple DSL with the following BNF
+  grammar:
+  #+BEGIN_EXAMPLE
+  Declaration ::= Valname : Type
+  Type ::= TyName | <Type Type>
+  LTerm ::= Valname | (LTerm LTerm) | (\Valname:Type . LTerm)
+  #+END_EXAMPLE
+  The following are assumed to be atomic types in the DSL
+  - =E=, a type for individual entities
+  - =T=, a type for boolean values
+  - =K=, a type for kinds
+  - =S=, a type for possible worlds
+  Suppose I want my lexicon to contain a predicate for entities, the
+  one that says of a particular entity that it is blue.  Then it will
+  be a function from entities to booleans, which we write as =<ET>=,
+  and which we assign to the lexical entry =blue= by putting it after
+  a colon with no spaces:
+  #+BEGIN_EXAMPLE
+  blue:<ET>
+  #+END_EXAMPLE
+  Next, suppose I want my software to tell me what the type of the
+  formula saying that keith is blue.  I would include the following
+  in my =LAMBDATERM= file:
+  #+BEGIN_EXAMPLE
+  (blue keith)
+  #+END_EXAMPLE
+  Since blue is a function mapping entities to truth values, the
+  entity =matt= applied to the function =blue= should be of boolean
+  type (i.e. intuitively, it's a sentence that's either true or
+  false), which is indeed what the =lambda= typechecker tells us:
+  #+BEGIN_EXAMPLE
+  $ lambda --check-types
+  (blue matt) : T
+  #+END_EXAMPLE
+* Source Files
+
+  The source files are located in the root directory of the project:
+  + ImperativeFuncs.hs
+  + LTerm.hs
+  + LambdaParse.hs
+  + Latex.hs
+  + Lexer.hs
+  + Main.hs
+  =Main= contains the code for the main program, =ImperativeFuncs=
+  contains the code that performs IO and validation on the input
+  files, =LTerm= contains the typechecking code, =LambdaParse=
+  contains the datatype for parse trees and the parsing functions,
+  =Latex= contains the code for displaying the results of the
+  typechecking as LaTeX, and =Lexer= contains the datatype for lexemes
+  and the code for the lexer.
