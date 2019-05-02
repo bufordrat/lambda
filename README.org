@@ -26,7 +26,7 @@
   This application allows you to write out any lambda term in a simple
   DSL, check to make sure it is well-typed, then pretty print the
   results either to the console or to attractively-typeset LaTeX.  See
-  [[dsl][DSL]] section for more information on how to use the DSL.
+  DSL section for more information on how to use the DSL.
 
 * Requirements
   This software was built for Linux and has been tested on Arch Linux,
@@ -36,7 +36,7 @@
   + Cabal build system
   # See [[installation][Installation]] section for more information on how to install
   # Haskell and Cabal.
-* <<usage>>Usage
+* Usage
   =lambda= expects three things in order to run:
   + a command-line option
   + a local =DECLARATIONS= file, which describes the types of all expression in
@@ -112,7 +112,7 @@
   with the same information.  That file can be compiled into a PDF with
   =pdflatex=.  You can view a sample PDF corresponding to the above example
   [[./examples/lambdas.pdf][here]].
-* <<installation>>Installation
+* Installation
   This project only requires =cabal= and =ghc= to be installed; no libraries
   required.  To compile it, run the following command in the root directory of
   the project:
@@ -146,7 +146,7 @@
   $ lambda --latex
   $ lambda --full-latex
   #+END_EXAMPLE
-* <<dsl>>DSL
+* DSL
   =lambda= types and terms are written in a simple DSL with the following BNF
   grammar:
   #+BEGIN_EXAMPLE
