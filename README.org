@@ -174,7 +174,7 @@
   (blue keith)
   #+END_EXAMPLE
   Since blue is a function mapping entities to truth values, the
-  entity =matt= applied to the function =blue= should be of boolean
+  entity =keith= applied to the function =blue= should be of boolean
   type (i.e. intuitively, it's a sentence that's either true or
   false), which is indeed what the =lambda= typechecker tells us:
   #+BEGIN_EXAMPLE
