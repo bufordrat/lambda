@@ -154,7 +154,7 @@
   Type ::= TyName | <Type Type>
   LTerm ::= Valname | (LTerm LTerm) | (\Valname:Type . LTerm)
   #+END_EXAMPLE
-  The following are assumed to be atomic types in the DSL
+  The following are assumed to be atomic types in the DSL:
   - =E=, a type for individual entities
   - =T=, a type for boolean values
   - =K=, a type for kinds
